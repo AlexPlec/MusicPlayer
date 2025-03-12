@@ -6,27 +6,27 @@ let mainWindow;
 let tray = null;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
+    mainWindow = new BrowserWindow({
+        width: 1920,
+        height: 1080,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
 
-  mainWindow.loadFile(path.join(__dirname, 'public', 'index.html'));
+    mainWindow.loadFile(path.join(__dirname, 'public', 'index.html'));
 
-  mainWindow.on('close', (event) => {
-    if (!app.isQuiting) {
-      event.preventDefault();
-      mainWindow.hide(); // Hide the window instead of closing it
-    }
-  });
-  
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+    mainWindow.on('close', (event) => {
+        if (!app.isQuiting) {
+            event.preventDefault();
+            mainWindow.hide(); // Hide the window instead of closing it
+        }
+    });
+
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
 }
 
 app.whenReady().then(() => {
@@ -40,45 +40,45 @@ app.whenReady().then(() => {
 
     const contextMenu = Menu.buildFromTemplate([
         {
-          label: 'Show App',
-          click: () => {
-            if (mainWindow) mainWindow.show();
-          },
+            label: 'Show App',
+            click: () => {
+                if (mainWindow) mainWindow.show();
+            },
         },
         {
-          label: 'Quit',
-          click: () => {
-            app.isQuiting = true; // Mark the app as quitting
-            app.quit();
-          },
+            label: 'Quit',
+            click: () => {
+                app.isQuiting = true; // Mark the app as quitting
+                app.quit();
+            },
         },
-      ]);
+    ]);
 
-      tray.setToolTip('Music Player');
-      tray.setContextMenu(contextMenu);
-    
-      // Handle double-click on tray icon
-      tray.on('double-click', () => {
+    tray.setToolTip('Music Player');
+    tray.setContextMenu(contextMenu);
+
+    // Handle double-click on tray icon
+    tray.on('double-click', () => {
         if (mainWindow) mainWindow.show();
-      });
-  
+    });
+
 });
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-   // app.quit();
-  }
+    if (process.platform !== 'darwin') {
+        // app.quit();
+    }
 });
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+        createWindow();
     }
-  });
+});
 
 // Handle request for music files
 ipcMain.handle('get-music-files', async () => {
-  const musicFolderPath = path.join(__dirname, 'music');
-  const files = await fs.promises.readdir(musicFolderPath);
-  const musicFiles = files.filter(file => file.endsWith('.mp3')).map(file => path.join(musicFolderPath, file));
-  return musicFiles;
+    const musicFolderPath = path.join(__dirname, 'music');
+    const files = await fs.promises.readdir(musicFolderPath);
+    const musicFiles = files.filter(file => file.endsWith('.mp3')).map(file => path.join(musicFolderPath, file));
+    return musicFiles;
 });
