@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,58 +10,85 @@
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
-      min-height: 100vh; /* Ensure the body takes up the full viewport height */
-      margin: 0; /* Remove default margin */
-      background-color: #f0f0f0; /* Light background color */
+      min-height: 100vh;
+      /* Ensure the body takes up the full viewport height */
+      margin: 0;
+      /* Remove default margin */
+      background-color: #000000;
+      /* Light background color */
     }
 
     #playlist {
       width: 100%;
       max-height: 300px;
       overflow-y: auto;
-      border: 1px solid #ccc;
+      border: 1px solid #000000;
       margin-bottom: 20px;
-      background-color: white; /* White background for playlist */
-      border-radius: 8px; /* Rounded corners */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      background-color: rgb(0, 0, 0);
+      /* White background for playlist */
+      border-radius: 8px;
+      /* Rounded corners */
     }
 
     .song-item {
       padding: 10px;
       cursor: pointer;
-      border-bottom: 1px solid #ddd; /* Border between items */
-      transition: all 0.3s ease; /* Smooth transitions */
+      /* Border between items */
+      transition: all 0.3s ease;
+      /* Smooth transitions */
+      color: white;
+      /* Text color */
     }
 
     .highlight {
-      background-color: #e6f7ff; /* Light blue background */
-      color: #0056b3; /* Dark blue text color */
-      font-weight: bold; /* Bold text */
-      box-shadow: inset 0 -2px 0 #0056b3; /* Inset shadow effect */
+      color: #00ccff;
+      /* Light blue text color */
     }
 
     .song-item:hover {
-      background-color: #f0f8ff; /* Hover effect */
+      background-color: rgba(255, 255, 255, 0.1);
+      /* Brighten on hover */
+      border-radius: 4px;
+      /* Slightly increase rounding on hover */
     }
 
     #audioPlayerContainer {
       display: flex;
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
+      justify-content: center;
+      /* Center horizontally */
+      align-items: center;
+      /* Center vertically */
       width: 100%;
-      height: 10vh; /* Take up 10% of the viewport height */
-      background-color: white; /* Background color for the container */
-      border-top: 1px solid #ccc; /* Top border */
-      padding: 10px; /* Padding around the audio player */
-      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      height: 10vh;
+      /* Take up 10% of the viewport height */
+      background-color: rgb(19, 19, 19);
+
+
+      padding: 10px;
+      /* Padding around the audio player */
     }
 
     #audioPlayer {
-      width: 90%; /* Take up 90% of the container's width */
-      max-width: 600px; /* Optional: Set a maximum width for better aesthetics */
+      width: 90%;
+      /* Take up 90% of the container's width */
+      max-width: 400px;
+      /* Optional: Set a maximum width for better aesthetics */
+      background-color: #000000;
+      /* White background for the audio player */
+      border-radius: 20px;
+      /* Rounded corners */
+      padding: 10px;
+      /* Padding inside the audio player */
+      display: flex;
+      align-items: center;
+      /* Vertically center the controls */
+      justify-content: space-between;
+      /* Space out the controls */
     }
+
   </style>
 </head>
+
 <body>
   <h1>Music Player</h1>
   <div id="playlist"></div>
@@ -72,4 +100,5 @@
 
   <script src="./renderer.js"></script>
 </body>
+
 </html>
