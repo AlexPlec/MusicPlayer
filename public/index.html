@@ -5,88 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Player</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      /* Ensure the body takes up the full viewport height */
-      margin: 0;
-      /* Remove default margin */
-      background-color: #000000;
-      /* Light background color */
-    }
-
-    #playlist {
-      width: 100%;
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid #000000;
-      margin-bottom: 20px;
-      background-color: rgb(0, 0, 0);
-      /* White background for playlist */
-      border-radius: 8px;
-      /* Rounded corners */
-    }
-
-    .song-item {
-      padding: 10px;
-      cursor: pointer;
-      /* Border between items */
-      transition: all 0.3s ease;
-      /* Smooth transitions */
-      color: white;
-      /* Text color */
-    }
-
-    .highlight {
-      color: #00ccff;
-      /* Light blue text color */
-    }
-
-    .song-item:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      /* Brighten on hover */
-      border-radius: 4px;
-      /* Slightly increase rounding on hover */
-    }
-
-    #audioPlayerContainer {
-      display: flex;
-      justify-content: center;
-      /* Center horizontally */
-      align-items: center;
-      /* Center vertically */
-      width: 100%;
-      height: 10vh;
-      /* Take up 10% of the viewport height */
-      background-color: rgb(19, 19, 19);
-
-
-      padding: 10px;
-      /* Padding around the audio player */
-    }
-
-    #audioPlayer {
-      width: 90%;
-      /* Take up 90% of the container's width */
-      max-width: 400px;
-      /* Optional: Set a maximum width for better aesthetics */
-      background-color: #000000;
-      /* White background for the audio player */
-      border-radius: 20px;
-      /* Rounded corners */
-      padding: 10px;
-      /* Padding inside the audio player */
-      display: flex;
-      align-items: center;
-      /* Vertically center the controls */
-      justify-content: space-between;
-      /* Space out the controls */
-    }
-
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -95,10 +14,21 @@
 
   <!-- Container for the audio player -->
   <div id="audioPlayerContainer">
-    <audio id="audioPlayer" controls></audio>
+    <audio id="audioPlayer"></audio>
+    <div id="customControls">
+      <button id="playPauseBtn">▶️</button> <!-- Play/Pause Button -->
+      <div id="timelineWrapper">
+        <div id="timeline">
+          <div id="progress"></div>
+        </div>
+        <span id="currentTime">0:00</span> <!-- Current Time -->
+        <span id="duration">0:00</span> <!-- Total Duration -->
+      </div>
+    </div>
   </div>
 
   <script src="./renderer.js"></script>
+  <!-- <script src="audio.js"></script> Custom audio player logic -->
 </body>
 
 </html>
