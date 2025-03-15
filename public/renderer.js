@@ -41,21 +41,34 @@ function renderPlaylist() {
 async function playTrack(index) {
   if (index >= 0 && index < musicFiles.length) {
     const file = musicFiles[index];
-      // Fetch the file as a Blob (works in Electron renderer)
-      const response = await fetch(file);
-      const blob = await response.blob();
 
-      // Parse metadata using parseBlob
-      
-      const metadata = await parseBlob(blob);
+    // Fetch the file as a Blob (works in Electron renderer)
+    const response = await fetch(file);
+    const blob = await response.blob();
 
-      const title = metadata.common.title
+    // Parse metadata using parseBlob
+    const metadata = await parseBlob(blob);
 
-      audioPlayer.src = file;
-      await audioPlayer.play();
-      currentTrackIndex = index;
-      highlightTrack(index);
-      currentSong.textContent = title;
+    // Extract title
+    const title = metadata.common.title || 'Unknown Title';
+
+    // Extract album cover art
+    let albumArtSrc = ''; // Default empty image source
+    if (metadata.common.picture && metadata.common.picture.length > 0) {
+      const picture = metadata.common.picture[0]; // Use the first image
+      const base64Image = Buffer.from(picture.data).toString('base64');
+      albumArtSrc = `data:${picture.format};base64,${base64Image}`;
+    }
+
+    // Update UI
+    audioPlayer.src = file;
+    await audioPlayer.play();
+    currentTrackIndex = index;
+    highlightTrack(index);
+
+    // Display title and album art
+    document.getElementById('currentSong').textContent = title;
+    document.getElementById('albumArt').src = albumArtSrc || ''; // Fallback to empty image
   }
 }
 
