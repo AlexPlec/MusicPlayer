@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-   "start": "electron ."
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^35.0.1"
+  },
+  "dependencies": {
+    "music-metadata-browser": "^2.5.11"
   }
 }

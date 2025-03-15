@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const { parseBlob } = require('music-metadata-browser');
 const playlist = document.getElementById('playlist');
 const audioPlayer = document.getElementById('audioPlayer');
 const path = require('path');
@@ -16,7 +17,6 @@ let currentTrackIndex = -1; // Track the currently playing song index
 ipcRenderer.invoke('get-music-files').then(files => {
   musicFiles = files;
   renderPlaylist();
-  console.log(files);
 });
 
 // Render the playlist
@@ -36,17 +36,29 @@ function renderPlaylist() {
   });
 }
 
-// Function to play a specific track
-function playTrack(index) {
+
+
+async function playTrack(index) {
   if (index >= 0 && index < musicFiles.length) {
     const file = musicFiles[index];
-    audioPlayer.src = file;
-    audioPlayer.play();
-    currentTrackIndex = index; // Update the current track index
-    highlightTrack(index); // Highlight the currently playing track
-    currentSong.textContent = path.basename(file);
+      // Fetch the file as a Blob (works in Electron renderer)
+      const response = await fetch(file);
+      const blob = await response.blob();
+
+      // Parse metadata using parseBlob
+      
+      const metadata = await parseBlob(blob);
+
+      const title = metadata.common.title
+
+      audioPlayer.src = file;
+      await audioPlayer.play();
+      currentTrackIndex = index;
+      highlightTrack(index);
+      currentSong.textContent = title;
   }
 }
+
 
 // Function to highlight the currently playing track
 function highlightTrack(index) {
