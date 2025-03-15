@@ -14,21 +14,21 @@
 
   <!-- Container for the audio player -->
   <div id="audioPlayerContainer">
-    <audio id="audioPlayer"></audio>
+    <h2>Now Playing</h2>
+    <h3 id="currentSong">No song selected</h3>
     <div id="customControls">
       <button id="playPauseBtn">▶️</button> <!-- Play/Pause Button -->
+      <span id="currentTime">0:00</span> <!-- Current Time -->
       <div id="timelineWrapper">
         <div id="timeline">
           <div id="progress"></div>
         </div>
-        <span id="currentTime">0:00</span> <!-- Current Time -->
         <span id="duration">0:00</span> <!-- Total Duration -->
       </div>
     </div>
   </div>
-
+  <audio id="audioPlayer"></audio>
   <script src="./renderer.js"></script>
-  <!-- <script src="audio.js"></script> Custom audio player logic -->
 </body>
 
 </html>

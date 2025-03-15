@@ -7,6 +7,7 @@ const timeline = document.getElementById('timeline');
 const progress = document.getElementById('progress');
 const currentTime = document.getElementById('currentTime');
 const duration = document.getElementById('duration');
+const currentSong = document.getElementById('currentSong');
 
 let musicFiles = [];
 let currentTrackIndex = -1; // Track the currently playing song index
@@ -15,6 +16,7 @@ let currentTrackIndex = -1; // Track the currently playing song index
 ipcRenderer.invoke('get-music-files').then(files => {
   musicFiles = files;
   renderPlaylist();
+  console.log(files);
 });
 
 // Render the playlist
@@ -42,6 +44,7 @@ function playTrack(index) {
     audioPlayer.play();
     currentTrackIndex = index; // Update the current track index
     highlightTrack(index); // Highlight the currently playing track
+    currentSong.textContent = path.basename(file);
   }
 }
 
