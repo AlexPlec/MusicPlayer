@@ -19,7 +19,6 @@ ipcRenderer.invoke('get-music-files').then(files => {
   renderPlaylist();
 });
 
-// Render the playlist
 function renderPlaylist() {
   playlist.innerHTML = ''; // Clear the playlist
   musicFiles.forEach((file, index) => {
@@ -35,8 +34,6 @@ function renderPlaylist() {
     playlist.appendChild(songItem);
   });
 }
-
-
 
 async function playTrack(index) {
   if (index >= 0 && index < musicFiles.length) {
