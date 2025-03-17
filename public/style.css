@@ -79,3 +79,17 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+
+#volumeControlContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#volumeControlContainer label {
+  margin-right: 10px;
+}
+
+#volumeSlider {
+  width: 150px;
+}

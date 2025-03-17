@@ -9,9 +9,16 @@ const progress = document.getElementById('progress');
 const currentTime = document.getElementById('currentTime');
 const duration = document.getElementById('duration');
 const currentSong = document.getElementById('currentSong');
+const volumeSlider = document.getElementById('volumeSlider');
 
 let musicFiles = [];
 let currentTrackIndex = -1; // Track the currently playing song index
+
+audioPlayer.volume = volumeSlider.value;
+
+volumeSlider.addEventListener('input', function() {
+  audioPlayer.volume = this.value;
+});
 
 // Request the list of music files from the main process
 ipcRenderer.invoke('get-music-files').then(files => {
