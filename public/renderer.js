@@ -132,7 +132,6 @@ playPauseBtn.addEventListener('click', () => {
     audioPlayer.pause();
     playPauseBtn.textContent = '▶️';
   }
-  console.log(audioPlayer);
 });
 
 // Update Play/Pause Button State

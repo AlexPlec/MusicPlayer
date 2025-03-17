@@ -1,104 +1,54 @@
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  /* Ensure the body takes up the full viewport height */
-  margin: 0;
-  /* Remove default margin */
+  color:white;
   background-color: #000000;
-  /* Light background color */
 }
 
-#playlist {
-  width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
-  border: 1px solid #000000;
-  margin-bottom: 20px;
-  background-color: rgb(0, 0, 0);
-  /* White background for playlist */
-  border-radius: 8px;
-  /* Rounded corners */
+#playlistContainer {
+  display: flex;;
+  flex-direction: column;
+  align-items: center;
 }
 
 .song-item {
   padding: 10px;
-  cursor: pointer;
-  /* Border between items */
   transition: all 0.3s ease;
-  /* Smooth transitions */
-  color: white;
-  /* Text color */
-}
-
-.highlight {
-  color: #00ccff;
-  /* Light blue text color */
+  cursor: pointer;
 }
 
 .song-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  /* Brighten on hover */
   border-radius: 4px;
-  /* Slightly increase rounding on hover */
 }
 
-#audioPlayerContainer {
-  display:  flexbox;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  width: 100%;
-  height: 10vh; /* Take up 10% of the viewport height */
-  background-color: #333; /* Dark background color */
-  border-top: 1px solid #444; /* Top border */
-  padding: 10px; /* Padding around the audio player */
-}
-#audioPlayer {
-  width: 90%;
-  /* Take up 90% of the container's width */
-  max-width: 400px;
-  /* Optional: Set a maximum width for better aesthetics */
-  background-color: #000000;
-  /* White background for the audio player */
-  border-radius: 20px;
-  /* Rounded corners */
-  padding: 10px;
-  /* Padding inside the audio player */
-  display: flex;
-  align-items: center;
-  /* Vertically center the controls */
-  justify-content: space-between;
-  /* Space out the controls */
-}
-
-#customControls {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between controls */
-  color: white;
-  background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
-  border-radius: 20px; /* Rounded corners */
-  padding: 10px; /* Padding inside the controls */
-}
-
-#customControls button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  outline: none;
-}
-
-#customControls button:hover {
+.highlight {
   color: #00ccff;
 }
 
-#timelineWrapper {
+#albumArt {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#audioPlayerContainer {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  width: 100%;
+}
+
+#albumArtContainer {
+  display: flex;
+  flex-direction: left;
+}
+
+#timelineContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 50%;
+  position: relative; 
+  top: 30px;
 }
 
 #timeline {
@@ -108,7 +58,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   position: relative;
-  margin-right: 10px; /* Add some space between the timeline and times */
+  margin-right: 10px;
 }
 
 #progress {
@@ -118,20 +68,14 @@ body {
   border-radius: 5px;
 }
 
-#currentTime {
-  font-size: 14px;
-  margin-right: 10px; /* Add some space around the time display */
+#songContainer {
+  flex-basis: 200px;
+  flex-shrink: 0;
 }
 
-#duration {
-  font-size: 14px;
-  margin-left: auto; /* Align to the right */
-}
-
-#playPauseBtn {
-  font-size: 24px; /* Larger icon size */
-}
-
-#playPauseBtn:hover {
-  color: #00ccff; /* Light blue on hover */
+#controlsContainer {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
 }

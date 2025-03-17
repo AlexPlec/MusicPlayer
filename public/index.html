@@ -9,26 +9,30 @@
 </head>
 
 <body>
-  <h1>Music Player</h1>
-  <div id="playlist"></div>
+  <div id="playlistContainer">
+    <div id="playlist"></div>
+  </div>
 
   <div id="audioPlayerContainer">
-    <h2>Now Playing</h2>
-    <h3 id="currentSong">No song selected</h3>
     <div id="albumArtContainer">
       <img id="albumArt" src="" alt="Album Cover" />
     </div>
-    <div id="customControls">
-      <button id="playPauseBtn">▶️</button>
-      <span id="currentTime">0:00</span>
-      <div id="timelineWrapper">
-        <div id="timeline">
-          <div id="progress"></div>
-        </div>
-        <span id="duration">0:00</span>
-      </div>
+    <div id="songContainer">
+      <div id="currentSong">No song selected</div>
+      <div id="currentArtist">No Artist selected</div>
+      <div id="currentAlbum">No Album selected</div>
     </div>
+    <div id="timelineContainer">
+      <span id="currentTime">0:00</span>
+      <div id="timeline">
+        <div id="progress"></div>
+      </div>
+      <span id="duration">0:00</span>
+      <div id="controlsContainer">
+        <button id="playPauseBtn">▶️</button>
+      </div>
   </div>
+
   <audio id="audioPlayer"></audio>
   <script src="./renderer.js"></script>
 </body>
