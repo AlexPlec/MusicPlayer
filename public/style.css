@@ -37,11 +37,6 @@ body {
   align-items: center;
 }
 
-#albumArtContainer {
-  display: flex;
-  flex-direction: left;
-}
-
 #timelineContainer {
   display: flex;
   flex-direction: row;
@@ -49,6 +44,9 @@ body {
   width: 50%;
   position: relative; 
   top: 30px;
+  flex-basis: 500px;
+  flex-shrink: 0;
+  flex-grow: 1;
 }
 
 #timeline {
@@ -64,8 +62,10 @@ body {
 #progress {
   height: 100%;
   width: 0%;
-  background-color: #00ccff;
+  /* background-color: #00ccff; */
+  background-color: white;
   border-radius: 5px;
+  transition: width 0.1s ease;
 }
 
 #songContainer {
@@ -78,18 +78,33 @@ body {
   top: -50px;
   left: 50%;
   transform: translateX(-50%);
+  flex-grow: 1;
 }
 
 #volumeControlContainer {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  margin-top: 10px;
+  width: 10%;
 }
 
-#volumeControlContainer label {
-  margin-right: 10px;
+#volumeTimeline {
+  flex-grow: 1;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  margin-left: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+#volumeProgress {
+  height: 100%;
+  width: 100%; /* Start with full width */
+  background-color: white;
+  border-radius: 5px;
 }
 
 #volumeSlider {
-  width: 150px;
+  display: none; /* Hide the slider visually since we're using #volumeTimeline */
 }

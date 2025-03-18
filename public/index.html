@@ -34,11 +34,13 @@
   </div>
   <div id="volumeControlContainer">
     <label for="volumeSlider">Volume:</label>
+    <div id="volumeTimeline">
+      <div id="volumeProgress"></div>
+    </div>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
   </div>
-
   <audio id="audioPlayer"></audio>
-  <script src="./renderer.js"></script>
+  <script type="module" src="./render.js"></script>
 </body>
 
 </html>
