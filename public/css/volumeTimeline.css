@@ -1,0 +1,27 @@
+#volumeControlContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 10%;
+}
+
+#volumeTimeline {
+    flex-grow: 1;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    margin-left: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+#volumeProgress {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#volumeSlider {
+    display: none;
+}

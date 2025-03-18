@@ -1,0 +1,7 @@
+#controlsContainer {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-grow: 1;
+}

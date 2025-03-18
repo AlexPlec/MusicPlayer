@@ -1,0 +1,20 @@
+#playlistContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.song-item {
+    padding: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.song-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.highlight {
+    color: #00ccff;
+}

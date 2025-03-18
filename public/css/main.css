@@ -1,0 +1,11 @@
+@import url("albumContainer.css");
+@import url("controlsContainer.css");
+@import url("playlistContainer.css");
+@import url("songContainer.css");
+@import url("songTimeline.css");
+@import url("volumeTimeline.css");
+
+body {
+    color: white;
+    background-color: #000000;
+}
