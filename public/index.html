@@ -11,6 +11,29 @@
 <body>
   <div id="playlistContainer">
     <div id="playlist"></div>
+
+    <div id="playlistTabs">
+      <button class="tab-button active" data-tab="songs">Songs</button>
+      <button class="tab-button" data-tab="albums">Albums</button>
+      <button class="tab-button" data-tab="artists">Artists</button>
+    </div>
+
+    <div id="playlistViews">
+      <!-- Songs View -->
+      <div id="songsView" class="playlist-view active">
+        <div id="allSongs"></div>
+      </div>
+
+      <!-- Albums View -->
+      <div id="albumsView" class="playlist-view">
+        <div id="groupedByAlbums"></div>
+      </div>
+
+      <!-- Artists View -->
+      <div id="artistsView" class="playlist-view">
+        <div id="groupedByArtists"></div>
+      </div>
+    </div>
   </div>
 
   <div id="audioPlayerContainer">
