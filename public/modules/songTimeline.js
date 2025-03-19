@@ -2,24 +2,29 @@ let isDragging = false;
 
 timeline.addEventListener('click', function (event) {
     if (!isDragging) {
-        const rect = timeline.getBoundingClientRect();
-        const clickPosition = event.clientX - rect.left;
-        const timelineWidth = rect.width;
-
-        const newTime = (clickPosition / timelineWidth) * audioPlayer.duration;
-        audioPlayer.currentTime = newTime;
+        updateProgress(event);
     }
 });
 
-timeline.addEventListener('mousedown', function (event) {
+timeline.addEventListener('mousedown', function () {
     isDragging = true;
-    updateProgress(event);
+    document.body.style.cursor = 'pointer';
+    audioPlayer.pause();
 });
 
 document.addEventListener('mousemove', function (event) {
     if (isDragging) {
-        updateProgress(event);
+        requestAnimationFrame(() => updateProgress(event));
     }
+});
+
+timeline.addEventListener('mouseup', function () {
+        audioPlayer.play();
+});
+
+document.addEventListener('mouseup', function () {
+    isDragging = false;
+    document.body.style.cursor = 'default';
 });
 
 function updateProgress(event) {
@@ -27,13 +32,12 @@ function updateProgress(event) {
     const clickPosition = event.clientX - rect.left;
     const timelineWidth = rect.width;
 
-    const newTime = (clickPosition / timelineWidth) * audioPlayer.duration;
+    const newTime = Math.max(0, Math.min((clickPosition / timelineWidth) * audioPlayer.duration, audioPlayer.duration));
     audioPlayer.currentTime = newTime;
 
     const progressPercentage = (newTime / audioPlayer.duration) * 100;
     progress.style.width = `${progressPercentage}%`;
-}
 
-document.addEventListener('mouseup', function () {
-    isDragging = false;
-});
+    progressThumb.style.left = `${progressPercentage}%`;
+
+}

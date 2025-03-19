@@ -8,19 +8,23 @@ audioPlayer.addEventListener('ended', () => {
 
 audioPlayer.addEventListener('play', () => {
     playPauseBtn.textContent = '⏸️';
+
 });
 audioPlayer.addEventListener('pause', () => {
     playPauseBtn.textContent = '▶️';
+
 });
 
 audioPlayer.addEventListener('timeupdate', function () {
     const duration = audioPlayer.duration;
-    const currentTime = audioPlayer.currentTime;
+    const audioPlayerTime = audioPlayer.currentTime;
 
     if (duration) {
-        const progressPercentage = (currentTime / duration) * 100;
+        const progressPercentage = (audioPlayerTime / duration) * 100;
         progress.style.width = `${progressPercentage}%`;
+        progressThumb.style.left = `${progressPercentage}%`;
     }
+    currentTime.textContent = formatTime(audioPlayerTime);
 });
 
 audioPlayer.addEventListener('loadedmetadata', () => {

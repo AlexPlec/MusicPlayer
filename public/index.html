@@ -26,21 +26,22 @@
       <span id="currentTime">0:00</span>
       <div id="timeline">
         <div id="progress"></div>
+        <div id="progressThumb"></div>
       </div>
       <span id="duration">0:00</span>
       <div id="controlsContainer">
         <button id="playPauseBtn">▶️</button>
       </div>
-  </div>
-  <div id="volumeControlContainer">
-    <label for="volumeSlider">Volume:</label>
-    <div id="volumeTimeline">
-      <div id="volumeProgress"></div>
     </div>
-    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-  </div>
-  <audio id="audioPlayer"></audio>
-  <script type="module" src="./render.js"></script>
+    <div id="volumeControlContainer">
+      <label for="volumeSlider">Volume:</label>
+      <div id="volumeTimeline">
+        <div id="volumeProgress"></div>
+      </div>
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+    </div>
+    <audio id="audioPlayer"></audio>
+    <script type="module" src="./render.js"></script>
 </body>
 
 </html>

@@ -10,5 +10,6 @@ const htmlElements = {
     volumeSlider: document.getElementById('volumeSlider'),
     volumeProgress: document.getElementById('volumeProgress'),
     albumArt: document.getElementById('albumArt'),
-    volumeTimeline: document.getElementById('volumeTimeline')
-}
+    volumeTimeline: document.getElementById('volumeTimeline'),
+    progressThumb: document.getElementById('progressThumb'),
+};
