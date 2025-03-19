@@ -12,4 +12,5 @@ const htmlElements = {
     albumArt: document.getElementById('albumArt'),
     volumeTimeline: document.getElementById('volumeTimeline'),
     progressThumb: document.getElementById('progressThumb'),
+    volumeProgressThumb: document.getElementById('volumeProgressThumb'),
 };

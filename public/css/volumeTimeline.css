@@ -25,3 +25,14 @@
 #volumeSlider {
     display: none;
 }
+
+#volumeProgressThumb {
+    position: absolute;
+    top: -1.5px;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}

@@ -1,4 +1,5 @@
 let isDragging = false;
+let mouseDraggin = false;
 
 timeline.addEventListener('click', function (event) {
     if (!isDragging) {
@@ -15,16 +16,17 @@ timeline.addEventListener('mousedown', function () {
 document.addEventListener('mousemove', function (event) {
     if (isDragging) {
         requestAnimationFrame(() => updateProgress(event));
+        mouseDraggin = true;
     }
-});
-
-timeline.addEventListener('mouseup', function () {
-        audioPlayer.play();
 });
 
 document.addEventListener('mouseup', function () {
     isDragging = false;
     document.body.style.cursor = 'default';
+    if (mouseDraggin) {
+        audioPlayer.play();
+        mouseDraggin = false;
+    }
 });
 
 function updateProgress(event) {
@@ -39,5 +41,4 @@ function updateProgress(event) {
     progress.style.width = `${progressPercentage}%`;
 
     progressThumb.style.left = `${progressPercentage}%`;
-
 }
