@@ -13,8 +13,8 @@ module.exports = {
         });
 
         document.getElementById('backToAlbums').addEventListener('click', () => {
-            document.getElementById('albumsView').classList.add('active');
-            document.getElementById('songsListView').classList.remove('active');
+            document.getElementById(`albumsView`).classList.add('active');
+            document.getElementById(`songsListView`).classList.remove('active');
         });
     }
 

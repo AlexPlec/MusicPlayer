@@ -3,9 +3,8 @@
 const audioPlayerController  = require ('./audioPlayerController.js');
 
 function showSongsListView(album, songs) {
-  document.getElementById('albumsView').style.display = 'none';
-  document.getElementById('songsListView').style.display = 'block';
-
+  document.getElementById(`albumsView`).classList.remove('active');
+  document.getElementById(`songsListView`).classList.add('active');
   document.getElementById('albumName').textContent = album;
 
   const songsListContainer = document.getElementById('songsList');
