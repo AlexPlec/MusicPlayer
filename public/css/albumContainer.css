@@ -4,3 +4,51 @@
     border-radius: 50%;
     margin-right: 10px;
 }
+
+/* Album Cover */
+.album-cover-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.album-cover {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.album-title {
+    font-size: 16px;
+    margin: 0;
+}
+
+.playlist-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.album-item {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#songsListView h2 {
+    margin-bottom: 10px;
+}
+
+#backToAlbums {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#backToAlbums:hover {
+    background-color: #0056b3;
+}
