@@ -16,6 +16,11 @@ module.exports = {
             document.getElementById(`albumsView`).classList.add('active');
             document.getElementById(`songsListView`).classList.remove('active');
         });
+
+        document.getElementById('backToArtists').addEventListener('click', () => {
+            document.getElementById(`artistsView`).classList.add('active');
+            document.getElementById(`albumsListView`).classList.remove('active');
+        });
     }
 
 };

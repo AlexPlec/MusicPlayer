@@ -52,3 +52,21 @@
 #backToAlbums:hover {
     background-color: #0056b3;
 }
+
+.artist-cover {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.artist-cover-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.artist-item {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
