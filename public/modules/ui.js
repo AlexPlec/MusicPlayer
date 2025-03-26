@@ -1,26 +1,37 @@
-module.exports = {
+function switchView(activeViewId) {
+    // Remove 'active' class from all tabs and views
+    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+    document.querySelectorAll('.playlist-view').forEach(view => view.classList.remove('active'));
 
+    // Add 'active' class to the selected tab and view
+    const activeTab = document.querySelector(`.tab-button[data-tab="${activeViewId.replace('View', '')}"]`);
+    if (activeTab) activeTab.classList.add('active');
+
+    const activeView = document.getElementById(activeViewId);
+    if (activeView) {
+        activeView.classList.add('active');
+    }
+}
+
+module.exports = {
     setupTabs: function () {
+        // Handle tab button clicks
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', () => {
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.playlist-view').forEach(view => view.classList.remove('active'));
-
-                button.classList.add('active');
                 const tab = button.dataset.tab;
-                document.getElementById(`${tab}View`).classList.add('active');
+                switchView(`${tab}View`); // Switch to the corresponding view
+                backToAlbums.classList.remove('activeArtists');
             });
         });
 
-        document.getElementById('backToAlbums').addEventListener('click', () => {
-            document.getElementById(`albumsView`).classList.add('active');
-            document.getElementById(`songsListView`).classList.remove('active');
+        backToAlbums.addEventListener('click', () => {
+            switchView('albumsView'); // Always go back to Artists View
+            if (backToAlbums.classList[0] === 'activeArtists') { switchView('albumsListView'); }
         });
 
-        document.getElementById('backToArtists').addEventListener('click', () => {
-            document.getElementById(`artistsView`).classList.add('active');
-            document.getElementById(`albumsListView`).classList.remove('active');
+        // Handle "Back to Artists" button click
+        backToArtists.addEventListener('click', () => {
+            switchView('artistsView'); // Always go back to Artists View
         });
-    }
-
+    },
 };

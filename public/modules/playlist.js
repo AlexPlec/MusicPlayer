@@ -1,18 +1,54 @@
 // playlist.js
 
-const audioPlayerController  = require ('./audioPlayerController.js');
+const audioPlayerController = require('./audioPlayerController.js');
+
+function switchView(fromView, toView, optionalView) {
+  fromView.classList.remove('active');
+  toView.classList.add('active');
+  if (optionalView) { optionalView.classList.remove('active'); }
+
+  if (toView === albumsListView) {
+    backToAlbums.classList.add('activeArtists');
+  }
+}
+
+function clearContainer(container) {
+  container.innerHTML = '';
+}
+
+function renderItem(itemName, pictureData, clickHandler) {
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'item-container';
+
+  const coverContainer = document.createElement('div');
+  coverContainer.className = 'cover-container';
+
+  const coverImage = document.createElement('img');
+  coverImage.className = 'cover-image';
+  coverImage.src = getImageArt(pictureData, 0); // Get album or artist art
+  coverImage.alt = itemName;
+
+  const title = document.createElement('h3');
+  title.textContent = itemName;
+
+  coverContainer.appendChild(coverImage);
+  coverContainer.appendChild(title);
+
+  coverContainer.addEventListener('click', clickHandler);
+
+  itemDiv.appendChild(coverContainer);
+  return itemDiv;
+}
 
 function showAlbumsListView(artist, tracks) {
   // Switch to the albums list view
-  document.getElementById('artistsView').classList.remove('active');
-  document.getElementById('albumsListView').classList.add('active');
+  switchView(artistsView, albumsListView);
 
   // Display the artist name
-  document.getElementById('albumName').textContent = artist;
+  albumName.textContent = artist;
 
   // Clear the albums container
-  const albumsListContainer = document.getElementById('albumsList');
-  albumsListContainer.innerHTML = '';
+  clearContainer(albumsList);
 
   // Group tracks by album for the selected artist
   const albumMap = new Map();
@@ -27,85 +63,101 @@ function showAlbumsListView(artist, tracks) {
 
   // Render albums for the selected artist
   albumMap.forEach((songs, album) => {
-    const albumDiv = document.createElement('div');
-    albumDiv.className = 'album-item';
-
-    const albumCoverContainer = document.createElement('div');
-    albumCoverContainer.className = 'album-cover-container';
-
-    const albumCover = document.createElement('img');
-    albumCover.className = 'album-cover';
-    albumCover.src = getAlbumArt(songs[0].picture); // Get album art from metadata
-    albumCover.alt = album;
-
-    const albumTitle = document.createElement('h3');
-    albumTitle.textContent = album;
-
-    albumCoverContainer.appendChild(albumCover);
-    albumCoverContainer.appendChild(albumTitle);
-
-    // Add event listener to navigate to songs list view
-    albumCoverContainer.addEventListener('click', () => {
-      showSongsListView(album, songs);
-    });
-
-    albumDiv.appendChild(albumCoverContainer);
-    albumsListContainer.appendChild(albumDiv);
+    const albumItem = renderItem(
+      album,
+      songs[0].picture,
+      () => showSongsListView(album, songs)
+    );
+    albumsList.appendChild(albumItem);
   });
 }
 
 function showSongsListView(album, songs) {
-  document.getElementById(`albumsView`).classList.remove('active');
-  document.getElementById(`songsListView`).classList.add('active');
-  document.getElementById('albumName').textContent = album;
+  // Switch to the songs list view
 
-  document.getElementById(`albumsListView`).classList.remove('active');
+  switchView(albumsView, songsListView, albumsListView);
 
-  const songsListContainer = document.getElementById('songsList');
-  songsListContainer.innerHTML = '';
+  // Display the album name
+  albumName.textContent = album;
 
-    const albumArt = document.createElement('img');
-    albumArt.className = 'album-cover';
-    albumArt.src = getAlbumArt(songs[0].picture); // Function to convert metadata picture to base64
+  // Clear the songs list container
+  clearContainer(songsList);
 
-  //  songItem.prepend(albumArt); // Place the album art before the text
-  songsListContainer.appendChild(albumArt);
+  // Add album art at the top of the songs list
+  const albumArt = document.createElement('img');
+  albumArt.className = 'album-cover';
+  albumArt.src = getImageArt(songs[0].picture, 0);
+  songsList.appendChild(albumArt);
+
+  // Render songs
   songs.forEach(({ title, artist, track, index }) => {
     const songItem = document.createElement('div');
     songItem.className = 'song-item';
 
-    songItem.textContent = `${track}. ${title} - ${artist}`;
+    songItem.textContent = `${track?.no || ''}. ${title} - ${artist}`;
     songItem.addEventListener('click', () => {
-      audioPlayerController.playTrack(index); // Use global playTrack function
+      audioPlayerController.playTrack(index);
     });
 
-    songsListContainer.appendChild(songItem);
+    songsList.appendChild(songItem);
   });
 }
 
-function getAlbumArt(pictureData) {
-  if (Array.isArray(pictureData) && pictureData.length > 0) {
-    const picture = pictureData[0];
+function getImageArt(pictureData, index = 0, defaultImage = './default-image.png') {
+  if (Array.isArray(pictureData) && pictureData.length > index) {
+    const picture = pictureData[index];
     const base64Image = Buffer.from(picture.data).toString('base64');
     return `data:${picture.format};base64,${base64Image}`;
   }
-  return './default-album-cover.png';
+  return defaultImage;
 }
 
-function getArtistArt(pictureData) {
-  if (Array.isArray(pictureData) && pictureData.length > 0) {
-    const picture = pictureData[1];
-    const base64Image = Buffer.from(picture.data).toString('base64');
-    return `data:${picture.format};base64,${base64Image}`;
-  }
-  return './default-artist-cover.png';
+function renderGroupedItems(container, allTracksMetadata, groupBy, coverClass, pictureIndex, clickHandler) {
+  clearContainer(container);
+
+  const itemMap = new Map();
+
+  // Group tracks by the specified key (album or artist)
+  allTracksMetadata.forEach((track, index) => {
+    const key = groupBy(track);
+    if (!itemMap.has(key)) {
+      itemMap.set(key, []);
+    }
+    itemMap.get(key).push({ ...track, index });
+  });
+
+  // Render each group as an item
+  itemMap.forEach((tracks, key) => {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'item-container';
+
+    const coverContainer = document.createElement('div');
+    coverContainer.className = 'cover-container';
+
+    const coverImage = document.createElement('img');
+    coverImage.className = coverClass;
+    coverImage.src = getImageArt(tracks[0].picture, pictureIndex);
+    coverImage.alt = key;
+
+    const title = document.createElement('h3');
+    title.textContent = key;
+
+    coverContainer.appendChild(coverImage);
+    coverContainer.appendChild(title);
+
+    // Attach click event listener
+    coverContainer.addEventListener('click', () => clickHandler(key, tracks));
+
+    itemDiv.appendChild(coverContainer);
+    container.appendChild(itemDiv);
+  });
 }
 
 module.exports = {
 
   renderAllSongs: function (allTracksMetadata) {
-    const allSongsContainer = document.getElementById('allSongs');
-    allSongsContainer.innerHTML = '';
+
+    clearContainer(allSongs);
 
     allTracksMetadata.forEach(({ title }, index) => {
       const songItem = document.createElement('div');
@@ -116,89 +168,29 @@ module.exports = {
         audioPlayerController.playTrack(index); // Use global playTrack function
       });
 
-      allSongsContainer.appendChild(songItem);
+      allSongs.appendChild(songItem);
     });
   },
 
   renderGroupedByAlbums: function (allTracksMetadata) {
-    const groupedByAlbumsContainer = document.getElementById('groupedByAlbums');
-    groupedByAlbumsContainer.innerHTML = '';
-
-    const albumMap = new Map();
-
-    allTracksMetadata.forEach((track, index) => {
-      const album = track.album || 'Unknown Album';
-      if (!albumMap.has(album)) {
-        albumMap.set(album, []);
-      }
-      albumMap.get(album).push({ ...track, index });
-    });
-
-    albumMap.forEach((songs, album) => {
-      const albumDiv = document.createElement('div');
-      albumDiv.className = 'album-item';
-
-      const albumCoverContainer = document.createElement('div');
-      albumCoverContainer.className = 'album-cover-container';
-
-      const albumCover = document.createElement('img');
-      albumCover.className = 'album-cover';
-      albumCover.src = getAlbumArt(songs[0].picture);
-      albumCover.alt = album;
-
-      const albumTitle = document.createElement('h3');
-      albumTitle.textContent = album;
-
-      albumCoverContainer.appendChild(albumCover);
-      albumCoverContainer.appendChild(albumTitle);
-
-      albumCoverContainer.addEventListener('click', () => {
-        showSongsListView(album, songs);
-      });
-
-      albumDiv.appendChild(albumCoverContainer);
-      groupedByAlbumsContainer.appendChild(albumDiv);
-    });
+    renderGroupedItems(
+      groupedByAlbums,
+      allTracksMetadata,
+      (track) => track.album || 'Unknown Album',
+      'album-cover',
+      0, // Use the first picture for album art
+      showSongsListView
+    );
   },
 
   renderGroupedByArtists: function (allTracksMetadata) {
-    const groupedByArtistsContainer = document.getElementById('groupedByArtists');
-    groupedByArtistsContainer.innerHTML = '';
-
-    const albumMap = new Map();
-
-    allTracksMetadata.forEach((track, index) => {
-      const album = track.album || 'Unknown Album';
-      if (!albumMap.has(album)) {
-        albumMap.set(album, []);
-      }
-      albumMap.get(album).push({ ...track, index });
-    });
-
-    albumMap.forEach((songs, album) => {
-      const albumDiv = document.createElement('div');
-      albumDiv.className = 'artist-item';
-
-      const albumCoverContainer = document.createElement('div');
-      albumCoverContainer.className = 'artist-cover-container';
-
-      const albumCover = document.createElement('img');
-      albumCover.className = 'artist-cover';
-      albumCover.src = getArtistArt(songs[0].picture);
-      albumCover.alt = album;
-
-      const albumTitle = document.createElement('h3');
-      albumTitle.textContent = album;
-
-      albumCoverContainer.appendChild(albumCover);
-      albumCoverContainer.appendChild(albumTitle);
-
-      albumCoverContainer.addEventListener('click', () => {
-         showAlbumsListView(album, songs);
-      });
-
-      albumDiv.appendChild(albumCoverContainer);
-      groupedByArtistsContainer.appendChild(albumDiv);
-    });
-  }
+    renderGroupedItems(
+      groupedByArtists,
+      allTracksMetadata,
+      (track) => track.artist || 'Unknown Artist',
+      'artist-cover',
+      1, // Use the second picture for artist art
+      showAlbumsListView
+    );
+  },
 };

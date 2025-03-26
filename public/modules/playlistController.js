@@ -26,5 +26,4 @@ ipcRenderer.invoke('get-music-files').then(async (files) => {
 
     // Set up tab navigation
     ui.setupTabs();
-    console.log(allTracksMetadata);
 });
