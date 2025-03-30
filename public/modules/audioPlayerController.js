@@ -8,7 +8,6 @@ function highlightTrack(index) {
 
 // Handle key presses for playback control
 function handleKeyPress(event) {
-    const audioPlayer = document.getElementById('audioPlayer');
 
     if (event.code === 'Space') {
         event.preventDefault();
@@ -50,28 +49,20 @@ module.exports = {
             const artist = trackMetadata.artist || 'Unknown Artist';
             const album = trackMetadata.album || 'Unknown Album';
 
-            let albumArtSrc = '';
-            if (trackMetadata.picture && trackMetadata.picture.length > 0) {
-                const picture = trackMetadata.picture[0];
-                const base64Image = Buffer.from(picture.data).toString('base64');
-                albumArtSrc = `data:${picture.format};base64,${base64Image}`;
-            }
+            // Resolve the album art image path
+            let albumArtSrc = trackMetadata.albumImage || trackMetadata.artistImage || './default-album.png';
 
-            const audioPlayer = document.getElementById('audioPlayer');
-            const currentSong = document.getElementById('currentSong');
-            const currentArtist = document.getElementById('currentArtist');
-            const currentAlbum = document.getElementById('currentAlbum');
-            const albumArt = document.getElementById('albumArt');
-
+            // Set the audio source and play the track
             audioPlayer.src = musicFiles[index];
             await audioPlayer.play();
             currentTrackIndex = index;
             highlightTrack(index);
 
+            // Update the UI with the track metadata
             currentSong.textContent = title;
             currentArtist.textContent = artist;
             currentAlbum.textContent = album;
-            albumArt.src = albumArtSrc || '';
+            albumArt.src = albumArtSrc; // Assign the resolved image path
         }
     },
 

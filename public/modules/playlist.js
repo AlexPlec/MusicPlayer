@@ -2,6 +2,8 @@
 
 const audioPlayerController = require('./audioPlayerController.js');
 
+const fs = require('fs/promises');
+
 function switchView(fromView, toView, optionalView) {
   fromView.classList.remove('active');
   toView.classList.add('active');
@@ -16,7 +18,19 @@ function clearContainer(container) {
   container.innerHTML = '';
 }
 
-function renderItem(itemName, pictureData, clickHandler) {
+async function resolveImagePath(imagePath, defaultImage) {
+  try {
+    if (!imagePath) return defaultImage;
+
+    const fileExists = await fs.stat(imagePath).then(() => true).catch(() => false);
+    return fileExists ? imagePath : defaultImage;
+  } catch (error) {
+    console.error(`Error resolving image path (${imagePath}):`, error);
+    return defaultImage;
+  }
+}
+
+async function renderAlbumItem(album, songs, defaultImage) {
   const itemDiv = document.createElement('div');
   itemDiv.className = 'item-container';
 
@@ -25,32 +39,62 @@ function renderItem(itemName, pictureData, clickHandler) {
 
   const coverImage = document.createElement('img');
   coverImage.className = 'cover-image';
-  coverImage.src = getImageArt(pictureData, 0); // Get album or artist art
-  coverImage.alt = itemName;
+  coverImage.alt = album;
+
+  try {
+    const imagePath = await resolveImagePath(songs[0].albumImage || songs[0].artistImage, defaultImage);
+    coverImage.src = imagePath;
+  } catch (error) {
+    console.error(`Error resolving image for album "${album}":`, error);
+    coverImage.src = defaultImage;
+  }
 
   const title = document.createElement('h3');
-  title.textContent = itemName;
+  title.textContent = album;
 
   coverContainer.appendChild(coverImage);
   coverContainer.appendChild(title);
 
-  coverContainer.addEventListener('click', clickHandler);
+  coverContainer.addEventListener('click', () => showSongsListView(album, songs, defaultImage));
 
   itemDiv.appendChild(coverContainer);
   return itemDiv;
 }
 
-function showAlbumsListView(artist, tracks) {
-  // Switch to the albums list view
+async function showAlbumsListView(artist, tracks, defaultImage = './default-album.png') {
   switchView(artistsView, albumsListView);
-
-  // Display the artist name
   albumName.textContent = artist;
-
-  // Clear the albums container
   clearContainer(albumsList);
 
-  // Group tracks by album for the selected artist
+  const albumMap = new Map();
+  tracks.forEach((track, index) => {
+    const album = track.album || 'Unknown Album';
+    if (!albumMap.has(album)) {
+      albumMap.set(album, []);
+    }
+    albumMap.get(album).push({ ...track, index });
+  });
+
+  for (const [album, songs] of albumMap.entries()) {
+    const albumItem = await renderAlbumItem(album, songs, defaultImage);
+    albumsList.appendChild(albumItem);
+  }
+}
+
+async function showAlbumsListView(artist, tracks, defaultImage = './default-album.png') {
+  switchView(artistsView, albumsListView);
+  albumName.textContent = artist;
+  clearContainer(albumsList);
+
+  const albumMap = groupTracksByAlbum(tracks);
+
+  for (const [album, songs] of albumMap.entries()) {
+    const albumItem = await renderAlbumItem(album, songs, defaultImage);
+    albumsList.appendChild(albumItem);
+  }
+}
+
+function groupTracksByAlbum(tracks) {
   const albumMap = new Map();
 
   tracks.forEach((track, index) => {
@@ -61,41 +105,21 @@ function showAlbumsListView(artist, tracks) {
     albumMap.get(album).push({ ...track, index });
   });
 
-  // Render albums for the selected artist
-  albumMap.forEach((songs, album) => {
-    const albumItem = renderItem(
-      album,
-      songs[0].picture,
-      () => showSongsListView(album, songs)
-    );
-    albumsList.appendChild(albumItem);
-  });
+  return albumMap;
 }
 
-function showSongsListView(album, songs) {
-  // Switch to the songs list view
-
-  switchView(albumsView, songsListView, albumsListView);
-
-  // Display the album name
-  albumName.textContent = album;
-
+function renderSongs(songs, maxVisibleSongs) {
   // Clear the songs list container
   clearContainer(songsList);
 
-  // Add album art at the top of the songs list
-  const albumArt = document.createElement('img');
-  albumArt.className = 'album-cover';
-  albumArt.src = getImageArt(songs[0].picture, 0);
-  songsList.appendChild(albumArt);
+  // Load only the first N songs
+  songs.slice(0, maxVisibleSongs).forEach(({ title, artist, track, index }) => {
+    const songItem = document.createElement("div");
+    songItem.className = "song-item";
+    songItem.textContent = `${track}. ${title} - ${artist}`;
 
-  // Render songs
-  songs.forEach(({ title, artist, track, index }) => {
-    const songItem = document.createElement('div');
-    songItem.className = 'song-item';
-
-    songItem.textContent = `${track?.no || ''}. ${title} - ${artist}`;
-    songItem.addEventListener('click', () => {
+    // Add click event listener to play the track
+    songItem.addEventListener("click", () => {
       audioPlayerController.playTrack(index);
     });
 
@@ -103,16 +127,36 @@ function showSongsListView(album, songs) {
   });
 }
 
-function getImageArt(pictureData, index = 0, defaultImage = './default-image.png') {
-  if (Array.isArray(pictureData) && pictureData.length > index) {
-    const picture = pictureData[index];
-    const base64Image = Buffer.from(picture.data).toString('base64');
-    return `data:${picture.format};base64,${base64Image}`;
-  }
-  return defaultImage;
+
+
+async function showSongsListView(album, songs, defaultImage) {
+  // Switch to the songs list view
+  switchView(albumsView, songsListView, albumsListView);
+
+  // Update the album name
+  albumName.textContent = album;
+
+  // Clear the songs list container
+  clearContainer(songsList);
+
+  // Resolve and set the album cover image
+  await setAlbumCoverImage(songs, defaultImage);
+
+  // Render the first 15 songs
+  renderSongs(songs, 15);
 }
 
-function renderGroupedItems(container, allTracksMetadata, groupBy, coverClass, pictureIndex, clickHandler) {
+async function setAlbumCoverImage(songs, defaultImage) {
+  try {
+    const imagePath = await resolveImagePath(songs[0].albumImage || songs[0].artistImage, defaultImage);
+    songListCover.src = imagePath; // Set the resolved image path
+  } catch (error) {
+    console.error(`Error resolving image for album:`, error);
+    songListCover.src = defaultImage; // Fallback to the default image
+  }
+}
+
+async function renderGroupedItems(container, allTracksMetadata, groupBy, coverClass, defaultImage, clickHandler) {
   clearContainer(container);
 
   const itemMap = new Map();
@@ -127,7 +171,7 @@ function renderGroupedItems(container, allTracksMetadata, groupBy, coverClass, p
   });
 
   // Render each group as an item
-  itemMap.forEach((tracks, key) => {
+  itemMap.forEach(async (tracks, key) => {
     const itemDiv = document.createElement('div');
     itemDiv.className = 'item-container';
 
@@ -136,7 +180,13 @@ function renderGroupedItems(container, allTracksMetadata, groupBy, coverClass, p
 
     const coverImage = document.createElement('img');
     coverImage.className = coverClass;
-    coverImage.src = getImageArt(tracks[0].picture, pictureIndex);
+    try {
+      const imagePath = await resolveImagePath(tracks[0].albumImage || tracks[0].artistImage, defaultImage);
+      coverImage.src = imagePath; // Set the resolved image path
+    } catch (error) {
+      console.error(`Error resolving image for ${key}:`, error);
+      coverImage.src = defaultImage; // Fallback to the default image
+    }
     coverImage.alt = key;
 
     const title = document.createElement('h3');

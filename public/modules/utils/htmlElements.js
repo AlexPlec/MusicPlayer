@@ -26,4 +26,8 @@ const htmlElements = {
     albumsList: document.getElementById('albumsList'),
     backToAlbums: document.getElementById('backToAlbums'),
     backToArtists: document.getElementById('backToArtists'),
+    currentArtist: document.getElementById('currentArtist'),
+    currentAlbum: document.getElementById('currentAlbum'),
+    albumInfoContainer: document.getElementById('albumInfoContainer'),
+    songListCover: document.getElementById('songListCover'),
 };

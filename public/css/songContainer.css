@@ -2,3 +2,69 @@
     flex-basis: 200px;
     flex-shrink: 0;
 }
+
+#albumInfoContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+#songsList {
+    height: 400px;
+    /* Fixed height for 15 items */
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
+}
+
+#songsList::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
+}
+
+#songsView {
+    height: 400px;
+    /* Fixed height for 15 items */
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
+}
+
+#songsView::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
+}
+
+#albumsView {
+    height: 400px;
+    /* Fixed height for 15 items */
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
+}
+
+#albumsView::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
+}
+
+#artistsView {
+    height: 400px;
+    /* Fixed height for 15 items */
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
+}
+
+#artistsView::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
+}

@@ -10,6 +10,15 @@
     cursor: pointer;
 }
 
+.song-item:nth-child(odd) {
+    background-color: #0f0f0f; /* Dark color */
+  }
+  
+  /* Light rows (even-numbered) */
+  .song-item:nth-child(even) {
+    background-color: #000000; /* Lighter color */
+  }
+
 .song-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
