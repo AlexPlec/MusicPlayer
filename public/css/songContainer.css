@@ -5,8 +5,6 @@
 
 #albumInfoContainer {
     display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
 }
 
 #songsList {
@@ -17,6 +15,7 @@
     /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;
     /* Hide scrollbar for IE/Edge */
+    width: 400px;
 }
 
 #songsList::-webkit-scrollbar {
@@ -32,6 +31,7 @@
     /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;
     /* Hide scrollbar for IE/Edge */
+    width: 400px;
 }
 
 #songsView::-webkit-scrollbar {
@@ -47,6 +47,7 @@
     /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;
     /* Hide scrollbar for IE/Edge */
+    width: 400px;
 }
 
 #albumsView::-webkit-scrollbar {
@@ -62,9 +63,21 @@
     /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;
     /* Hide scrollbar for IE/Edge */
+    width: 400px;
 }
 
 #artistsView::-webkit-scrollbar {
     display: none;
     /* Hide scrollbar for Chrome/Safari */
+}
+
+#albumsListView {
+    height: 400px;
+    /* Fixed height for 15 items */
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
+    width: 400px;
 }

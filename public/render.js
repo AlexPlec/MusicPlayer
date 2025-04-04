@@ -1,3 +1,4 @@
+const jsonManager = require('./modules/utils/jsonManager.js');
 const volume = require('./modules/volumeTimeline.js');
 const songTime = require('./modules/songTimeline.js');
 const player = require('./modules/audioPlayer.js');

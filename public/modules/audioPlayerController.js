@@ -1,4 +1,9 @@
-// audioPlayer.js
+const eventManager = require('./utils/eventEmitter.js');
+let songsToPlay = [];
+let albumCoverPath;
+let albumTitle;
+let artistSongsName;
+
 function highlightTrack(index) {
     const songItems = document.querySelectorAll('.song-item');
     songItems.forEach((item, i) => {
@@ -21,49 +26,49 @@ function handleKeyPress(event) {
     if (event.code === 'ArrowLeft') {
         event.preventDefault();
         if (currentTrackIndex > 0) {
-            playTrack(currentTrackIndex - 1);
+            module.exports.playTrack(currentTrackIndex - 1);
         }
     }
 
     if (event.code === 'ArrowRight') {
         event.preventDefault();
-        if (currentTrackIndex < musicFiles.length - 1) {
-            playTrack(currentTrackIndex + 1);
+        if (currentTrackIndex < songsToPlay.length - 1) {
+            module.exports.playTrack(currentTrackIndex + 1);
         }
     }
 }
 
 module.exports = {
-    initializeAudioPlayer: function (metadata, files) {
-        allTracksMetadata = metadata;
-        musicFiles = files;
-
-        document.addEventListener('keydown', handleKeyPress);
-    },
-
-    // Play a specific track
     playTrack: async function (index) {
-        if (index >= 0 && index < allTracksMetadata.length) {
-            const trackMetadata = allTracksMetadata[index];
+
+        if (index >= 0 && index < songsToPlay.length) {
+            const trackMetadata = songsToPlay[index];
             const title = trackMetadata.title || 'Unknown Title';
-            const artist = trackMetadata.artist || 'Unknown Artist';
-            const album = trackMetadata.album || 'Unknown Album';
 
-            // Resolve the album art image path
-            let albumArtSrc = trackMetadata.albumImage || trackMetadata.artistImage || './default-album.png';
-
-            // Set the audio source and play the track
-            audioPlayer.src = musicFiles[index];
+            audioPlayer.src = songsToPlay[index].filePath;
             await audioPlayer.play();
             currentTrackIndex = index;
             highlightTrack(index);
 
-            // Update the UI with the track metadata
             currentSong.textContent = title;
-            currentArtist.textContent = artist;
-            currentAlbum.textContent = album;
-            albumArt.src = albumArtSrc; // Assign the resolved image path
+            currentArtist.textContent = artistSongsName;
+            currentAlbum.textContent = albumTitle;
+            albumArt.src = albumCoverPath;
         }
     },
 
+    updatePlayTrack: function (songsToPlayArray, albumCover, albumName, artistName) {
+        songsToPlay = songsToPlayArray
+        albumCoverPath = albumCover
+        albumTitle = albumName
+        artistSongsName = artistName
+    }
 };
+
+eventManager.on('cacheArraysInitialized', ({ }) => {
+    document.addEventListener('keydown', handleKeyPress);
+});
+
+eventManager.on('initializationFailed', (error) => {
+    console.error('Initialization failed:', error);
+});

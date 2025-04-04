@@ -129,8 +129,11 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-music
-.mp3
+*.mp3
 
-musicCache.json
-metadataCache.json
+music
+
+artistCache.json
+albumCache.json
+songsCache.json
+structuredSongsCache.json
