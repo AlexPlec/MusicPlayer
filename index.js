@@ -1,7 +1,5 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
-const fs = require('fs');
-const musicFolderPath = ('./music');
 
 let mainWindow;
 let tray = null;
@@ -10,6 +8,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1920,
         height: 1080,
+        fullscreen: false, 
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -76,66 +75,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-
-// ipcMain.handle('get-music-files', async () => {
-//     const musicFolderPath = path.join(__dirname, 'music');
-//     const files = await fs.promises.readdir(__dirname);
-
-//     const musicFiles = files.filter(file => file.endsWith('.mp3')).map(file => path.join(musicFolderPath, file));
-//     return musicFolderPath;
-// });
-
-// async function getMusicStructure(dir) {
-
-//     const artists = await fs.promises.readdir(dir, { withFileTypes: true });
-
-//     // Initialize an array to store the structured data
-//     const musicStructure = [];
-
-//     for (const artist of artists) {
-//         if (artist.isDirectory()) {
-//             const artistName = artist.name;
-//             const artistPath = path.join(dir, artistName);
-
-//             // Get all albums for the current artist
-//             const albums = await fs.promises.readdir(artistPath, { withFileTypes: true });
-
-//             const artistData = {
-//                 name: artistName,
-//                 albums: [],
-//             };
-
-//             for (const album of albums) {
-//                 if (album.isDirectory()) {
-//                     const albumName = album.name;
-//                     const albumPath = path.join(artistPath, albumName);
-
-//                     // Get all songs for the current album
-//                     const songs = await fs.promises.readdir(albumPath);
-
-//                     // Filter only .mp3 files
-//                     const songList = songs.filter((song) => song.endsWith('.mp3'));
-
-//                     artistData.albums.push({
-//                         name: albumName,
-//                         songs: songList,
-//                     });
-//                 }
-//             }
-
-//             // Add the artist's data to the music structure
-//             musicStructure.push(artistData);
-//         }
-//     }
-
-//     return musicStructure;
-// }
-
-// ipcMain.handle('get-music-files', async () => {
-//     const musicStructure = await getMusicStructure(musicFolderPath);
-//     return musicStructure;
-// });
-
-
-

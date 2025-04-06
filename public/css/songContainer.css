@@ -81,3 +81,7 @@
     /* Hide scrollbar for IE/Edge */
     width: 400px;
 }
+
+#songsListView {
+    height: 400px;
+}

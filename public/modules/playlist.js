@@ -21,8 +21,6 @@ function renderSongs(artistSongsName, songs, maxVisibleSongs) {
 
   clearContainer(songsList);
 
-  console.log(songs);
-
   songs.slice(0, maxVisibleSongs).forEach(({ title, track }, currentIndex) => {
     const songItem = document.createElement("div");
     songItem.className = "song-item";

@@ -1,15 +1,8 @@
-audioPlayer.addEventListener('ended', () => {
-    if (currentTrackIndex < musicFiles.length - 1) {
-        playTrack(currentTrackIndex + 1);
-    } else {
-        console.log('End of playlist reached.');
-    }
-});
-
 audioPlayer.addEventListener('play', () => {
     playPauseBtn.textContent = '⏸️';
 
 });
+
 audioPlayer.addEventListener('pause', () => {
     playPauseBtn.textContent = '▶️';
 

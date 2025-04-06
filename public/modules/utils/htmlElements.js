@@ -30,4 +30,5 @@ const htmlElements = {
     currentAlbum: document.getElementById('currentAlbum'),
     albumInfoContainer: document.getElementById('albumInfoContainer'),
     songListCover: document.getElementById('songListCover'),
+    repeatButton: document.getElementById('repeatButton'),
 };
